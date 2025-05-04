@@ -6,7 +6,7 @@
 /*   By: mrouissy <mrouissy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:29:01 by mrouissy          #+#    #+#             */
-/*   Updated: 2025/04/25 14:34:00 by mrouissy         ###   ########.fr       */
+/*   Updated: 2025/04/29 13:46:42 by mrouissy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,12 @@
 #define WHT "\e[0;37m"
 
 #include "signals.h"
+#include "helper.h"
+#include "parsing.h"
+
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
+
+
 #endif

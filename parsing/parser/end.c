@@ -1,21 +1,14 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signals.h                                          :+:      :+:    :+:   */
+/*   end.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mrouissy <mrouissy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/25 14:27:11 by mrouissy          #+#    #+#             */
-/*   Updated: 2025/04/25 14:36:03 by mrouissy         ###   ########.fr       */
+/*   Created: 2025/04/29 13:44:36 by mrouissy          #+#    #+#             */
+/*   Updated: 2025/04/29 13:45:41 by mrouissy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SIGNALS_H
-#define SIGNALS_H
+#include "../../headers/head.h"
 
-#include <signal.h>
-
-//handel ctrl + c ctrl + d ctrl + \  //
-void handel_signals();
-
-#endif

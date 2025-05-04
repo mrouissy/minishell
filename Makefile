@@ -10,7 +10,9 @@ LDFLAGS = -L/usr/local/opt/readline/lib -I/usr/local/opt/readline/include -lread
 #LDFLAGS = -lreadline -lhistory
 
 SRC =	src/main.c \
-		parsing/signals/siganl.c
+		parsing/signals/siganl.c \
+		parsing/lexer/lexer.c \
+		helper/helper_1.c
 
 OBJ = $(SRC:.c=.o)
 

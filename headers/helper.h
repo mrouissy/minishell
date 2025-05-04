@@ -1,32 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   siganl.c                                           :+:      :+:    :+:   */
+/*   helper.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mrouissy <mrouissy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/25 14:26:06 by mrouissy          #+#    #+#             */
-/*   Updated: 2025/04/25 15:29:36 by mrouissy         ###   ########.fr       */
+/*   Created: 2025/04/29 13:13:31 by mrouissy          #+#    #+#             */
+/*   Updated: 2025/04/29 14:00:10 by mrouissy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../headers/head.h"
+#ifndef HELPER_H
+#define HELPER_H
 
-extern void rl_replace_line (const char *, int);
+//exit code -------------
+#define FAILED_STATUS 127
+#define QUIT_STATUS 139
+//-------------------------
+#include <stdbool.h>
 
-static void handeler(int sig)
-{
-	if (sig == SIGINT)
-	{
-		printf("\n");
-		rl_on_new_line();
-		rl_replace_line("", 0);
-		rl_redisplay();
-	}
-}
-void handel_signals()
-{
-	signal(SIGQUIT,SIG_IGN);
-	signal(SIGINT,SIG_IGN);
-	signal(SIGINT,handeler);
-}
+//helper_1
+int ft_strlen(char *str);
+int ft_strcmp(char *s1, char *s2);
+bool ft_strchr(char c, char *arry);
+char **ft_split(char *promt);
+void free_split(char **str);
+
+//end
+
+//init
+
+#endif

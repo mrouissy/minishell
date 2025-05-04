@@ -1,39 +1,46 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   helper_1.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mrouissy <mrouissy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/09 13:39:01 by mrouissy          #+#    #+#             */
-/*   Updated: 2025/04/25 14:35:31 by mrouissy         ###   ########.fr       */
+/*   Created: 2025/04/29 13:08:32 by mrouissy          #+#    #+#             */
+/*   Updated: 2025/04/29 14:10:16 by mrouissy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/head.h"
 
-void display()
+int ft_strlen(char *str)
 {
-	char *head = h1;
-	write(1,RED,8);
-	while (*head)
-	{
-		write(1,head++,1);
-		if(*head == '\n')
-			usleep(100000);
-	}
-	write(1,WHT,8);
+	int i;
 
+	i = -1;
+	while (str[++i])
+		;
+	return (i);
 }
-int main()
-{
-	display();
-	handel_signals();
-	char * line;
 
-	while (1)
+int ft_strcmp(char *s1, char *s2)
+{
+	while (*s1 && *s2 && *s1 == *s2)
 	{
-		line = readline("./minishell$ ");
+		s1++;
+		s2++;
 	}
-	printf("line: %s\n", line);
+	return (*s1 - *s2);
+}
+
+bool ft_strchr(char c, char *arry)
+{
+	if(!arry && !c)
+		return (false);
+	while(*arry)
+	{
+		if(c == *arry)
+			return (true);
+		arry++;
+	}
+	return (false);
 }
