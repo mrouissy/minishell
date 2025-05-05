@@ -79,6 +79,7 @@ char **ft_split(char *promt)
 			while (promt[j] && promt[j] != quote)
 				tokens[i][k++] = promt[j++];
 			tokens[i][k] = '\0';
+			//add "amin"e == amine
 			if (promt[j] == quote)
 				j++;
 		}
@@ -98,13 +99,39 @@ char **ft_split(char *promt)
 	return tokens;
 }
 
-bool fill_tokens(char *promt)
+void fill_tokens(s_toknes **tokenes, char *promt)
 {
-	char **tokenes;
+	char **cmd;
 	int i = 0;
-	tokenes = ft_split(promt);
-	while (tokenes[i])
-		printf("%s\n",tokenes[i++]);
-	free_split(tokenes);
-	return true;
+	s_toknes *tmp;
+
+	cmd = ft_split(promt);
+	while (cmd[i])
+	{
+		if(!ft_strcmp(cmd[i],">"))
+			tmp = new(cmd[i],0);
+		else if(!ft_strcmp(cmd[i],">"))
+			tmp = new(cmd[i],3);
+		else if(!ft_strcmp(cmd[i],">>"))
+			tmp = new(cmd[i],4);
+		else if(!ft_strcmp(cmd[i],"<<"))
+			tmp = new(cmd[i],5);
+		else if(!ft_strcmp(cmd[i],"$"))
+			tmp = new(cmd[i],6);
+		else if(!ft_strcmp(cmd[i],"|"))
+			tmp = new(cmd[i],1);
+		else if(!ft_strcmp(cmd[i],"\0"))
+			tmp = new(cmd[i],7);
+		else
+			tmp = new(cmd[i],0);
+
+		add_back(tmp,tokenes);
+		i++;
+	}
+	while(*tokenes)
+	{
+		printf("%s==>%d\n",(*tokenes)->value,(*tokenes)->type);
+		*tokenes=(*tokenes)->next;
+	}
+	free_split(cmd);
 }

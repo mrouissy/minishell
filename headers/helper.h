@@ -18,6 +18,7 @@
 #define QUIT_STATUS 139
 //-------------------------
 #include <stdbool.h>
+#include "parsing.h"
 
 //helper_1
 int ft_strlen(char *str);
@@ -26,8 +27,9 @@ bool ft_strchr(char c, char *arry);
 char **ft_split(char *promt);
 void free_split(char **str);
 
-//end
+//helper_linked_list
+s_toknes *new(char * value, int type);
+void add_back(s_toknes *new, s_toknes **head);
 
-//init
 
 #endif

@@ -9,8 +9,8 @@
 #define TOKEN_REDIR_IN   3   // <
 #define TOKEN_APPEND     4   // >>
 #define TOKEN_HEREDOC    5   // <<
-#define TOKEN_DOLLAR     10  // $
-#define TOKEN_EOF        11  // End of input
+#define TOKEN_DOLLAR     6  // $
+#define TOKEN_EOF        7  // End of input
 //------------------------------------------------------
 
 typedef struct t_tokens
@@ -21,7 +21,7 @@ typedef struct t_tokens
 } s_toknes;
 
 int count_tokens(char *promt);
-bool fill_tokens(char *promt);
+void fill_tokens(s_toknes **tokenes, char *promt);
 
 
 #endif

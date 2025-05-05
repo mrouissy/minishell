@@ -27,15 +27,17 @@ void display()
 int main()
 {
 	char * line;
-
+	s_toknes *tokenes = {0};
 	handel_signals();
 	display();
 	while (1)
 	{
 		line =readline("./minishell$ ");
 		if(ft_strlen(line))
+		{
 			add_history(line);
-		fill_tokens(line);
+			fill_tokens(&tokenes,line);
+		}
 	}
 	free(line);
 	clear_history();
