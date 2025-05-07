@@ -63,14 +63,3 @@ bool is_sstring(char *str)
 		return false;
 
 }
-// int main()
-// {
-// 	printf("%d\n",is_sstring("<<"));
-// 	printf("%d\n",is_sstring(">>"));
-// 	printf("%d\n",is_sstring("<>"));
-// 	printf("%d\n",is_sstring("><"));
-// 	printf("%d\n",is_sstring("||"));
-// 	printf("%d\n",is_sstring("hello"));
-// 	return 0;
-// }
-

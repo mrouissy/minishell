@@ -56,10 +56,6 @@ char **ft_split(char *promt)
 	char **tokens = ft_safe_malloc((wc + 1) * sizeof(char *),ALLOCATE,0,NULL);
 	if (!tokens)
 		return (NULL);
-	char *tmp = ft_safe_malloc(3,ALLOCATE,0,NULL);
-	if (!tmp)
-		return (NULL);
-
 	while (i < wc)
 	{
 		while (promt[j] && is_space(promt[j]))
@@ -67,7 +63,9 @@ char **ft_split(char *promt)
 		if (is_sstring(promt + j))
 		{
 			k = 0;
-			tokens[i] = ft_safe_malloc(ft_strlen(tmp) + 1,ALLOCATE,0,NULL);
+			tokens[i] = ft_safe_malloc(ft_strlen(promt) + 1,ALLOCATE,0,NULL);
+			if(!tokens)
+				return (NULL);
 			while (promt[j] && is_schar(promt[j]))
 				tokens[i][k++] = promt[j++];
 			tokens[i][k] = '\0';
@@ -83,19 +81,17 @@ char **ft_split(char *promt)
 			j++;
 			while (promt[j] && promt[j] != quote)
 				tokens[i][k++] = promt[j++];
-			if (promt[j] == quote && promt[j + 1] && !is_space(promt[j + 1]))
+			//need to handel redriction >> > << <
+			if(promt[j] == quote && (is_space(promt[j + 1]) || is_schar(promt[j + 1])))
+				tokens[i][k++] = quote;
+			if (promt[j] == quote && promt[j++])
 			{
-				if(is_space(promt[++j]))
-				{
-					tokens[i][k++] = quote;
-					tokens[i][k] = '\0';
-					i++;
-					continue;
-				}
 				while (promt[j] && !is_space(promt[j]))
 					tokens[i][k++] = promt[j++];
 				tokens[i][k++] = quote;
 			}
+			else
+				return (NULL);
 			tokens[i][k] = '\0';
 		}
 		else
@@ -123,10 +119,15 @@ void fill_tokens(s_toknes **tokenes, char *promt)
 	s_toknes *tmp;
 
 	cmd = ft_split(promt);
+	if(!cmd)
+	{
+		printf("Error: ft_split failed");
+		exit(1);
+	}
 	while (cmd[i])
 	{
 		if(!ft_strcmp(cmd[i],">"))
-			tmp = new(cmd[i],0);
+			tmp = new(cmd[i],2);
 		else if(!ft_strcmp(cmd[i],">"))
 			tmp = new(cmd[i],3);
 		else if(!ft_strcmp(cmd[i],">>"))
@@ -141,7 +142,6 @@ void fill_tokens(s_toknes **tokenes, char *promt)
 			tmp = new(cmd[i],7);
 		else
 			tmp = new(cmd[i],0);
-
 		add_back(tmp,tokenes);
 		i++;
 	}

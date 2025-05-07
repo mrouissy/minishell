@@ -42,5 +42,6 @@ int main()
 	free(line);
 	ft_safe_malloc(0,FREE_ALL,0,NULL);
 	clear_history();
+	atexit(ft_safe_malloc(0,FREE_ALL,0,NULL));
 	return (0);
 }
