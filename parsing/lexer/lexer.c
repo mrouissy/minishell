@@ -2,16 +2,6 @@
 
 #include "../../headers/head.h"
 
-bool is_space(char c)
-{
-	return (c == ' ' || c == '\t' || c == '\n');
-}
-
-bool is_schar(char c)
-{
-	return (c == '<' || c == '|' || c == '>');
-}
-
 int count_tokens(char *promt)
 {
 	int tokens = 0;
@@ -63,33 +53,60 @@ char **ft_split(char *promt)
 	int i = 0, j = 0, k = 0;
 	char quote;
 	int wc = count_tokens(promt);
-	char **tokens = malloc((wc + 1) * sizeof(char *));
+	char **tokens = ft_safe_malloc((wc + 1) * sizeof(char *),ALLOCATE,0,NULL);
 	if (!tokens)
+		return (NULL);
+	char *tmp = ft_safe_malloc(3,ALLOCATE,0,NULL);
+	if (!tmp)
 		return (NULL);
 
 	while (i < wc)
 	{
 		while (promt[j] && is_space(promt[j]))
 			j++;
-		if (promt[j] == '\'' || promt[j] == '\"')
+		if (is_sstring(promt + j))
 		{
-			quote = promt[j++];
 			k = 0;
-			tokens[i] = malloc(ft_strlen(promt) + 1);
-			while (promt[j] && promt[j] != quote)
+			tokens[i] = ft_safe_malloc(ft_strlen(tmp) + 1,ALLOCATE,0,NULL);
+			while (promt[j] && is_schar(promt[j]))
 				tokens[i][k++] = promt[j++];
 			tokens[i][k] = '\0';
-			//add "amin"e == amine
-			if (promt[j] == quote)
-				j++;
+		}
+		else if (promt[j] == '\'' || promt[j] == '\"')
+		{
+			quote = promt[j];
+			k = 0;
+			tokens[i] = ft_safe_malloc(ft_strlen(promt) + 1, ALLOCATE, 0, NULL);
+			if (!tokens[i])
+				return (NULL);
+			tokens[i][k++] = quote;
+			j++;
+			while (promt[j] && promt[j] != quote)
+				tokens[i][k++] = promt[j++];
+			if (promt[j] == quote && promt[j + 1] && !is_space(promt[j + 1]))
+			{
+				if(is_space(promt[++j]))
+				{
+					tokens[i][k++] = quote;
+					tokens[i][k] = '\0';
+					i++;
+					continue;
+				}
+				while (promt[j] && !is_space(promt[j]))
+					tokens[i][k++] = promt[j++];
+				tokens[i][k++] = quote;
+			}
+			tokens[i][k] = '\0';
 		}
 		else
 		{
 			k = 0;
-			tokens[i] = malloc(ft_strlen(promt) + 1);
+			tokens[i] = ft_safe_malloc(ft_strlen(promt) + 1,ALLOCATE,0,NULL);
+			if (!tokens[i])
+				return (NULL);
 			while (promt[j] && !is_space(promt[j]) && promt[j] != '\'' && promt[j] != '\"' && !is_schar(promt[j]))
 				tokens[i][k++] = promt[j++];
-			if (promt[j] && is_schar(promt[j]))
+			while (promt[j] && is_schar(promt[j]))
 				tokens[i][k++] = promt[j++];
 			tokens[i][k] = '\0';
 		}
@@ -133,5 +150,4 @@ void fill_tokens(s_toknes **tokenes, char *promt)
 		printf("%s==>%d\n",(*tokenes)->value,(*tokenes)->type);
 		*tokenes=(*tokenes)->next;
 	}
-	free_split(cmd);
 }

@@ -40,6 +40,7 @@ int main()
 		}
 	}
 	free(line);
+	ft_safe_malloc(0,FREE_ALL,0,NULL);
 	clear_history();
 	return (0);
 }

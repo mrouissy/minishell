@@ -22,6 +22,8 @@ typedef struct t_tokens
 
 int count_tokens(char *promt);
 void fill_tokens(s_toknes **tokenes, char *promt);
+char **ft_split(char *promt);
+void free_split(char **str);
 
 
 #endif

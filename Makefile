@@ -1,7 +1,7 @@
 
 NAME = ./minishell
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g3 #-fsanitize=address -g
 
 #hadi hi fmac
 LDFLAGS = -L/usr/local/opt/readline/lib -I/usr/local/opt/readline/include -lreadline -lhistory
@@ -9,7 +9,7 @@ LDFLAGS = -L/usr/local/opt/readline/lib -I/usr/local/opt/readline/include -lread
 #hadi linux
 #LDFLAGS = -lreadline -lhistory
 
-SRC =	src/main.c \
+SRC =	src/main.c src/garbege_collecter.c\
 		parsing/signals/siganl.c \
 		parsing/lexer/lexer.c \
 		helper/helper_1.c helper/helper_linkedlist.c

@@ -21,10 +21,9 @@
 #include "signals.h"
 #include "helper.h"
 #include "parsing.h"
-
+#include "garbege_collecter.h"
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
-
 
 #endif
