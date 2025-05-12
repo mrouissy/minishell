@@ -24,6 +24,13 @@ void display()
 	}
 	write(1,WHT,8);
 }
+void *free_all(char *line)
+{
+	ft_safe_malloc(0,FREE_ALL,0,NULL);
+	free(line);
+	clear_history();
+	return (NULL);
+}
 int main()
 {
 	char * line;
@@ -37,11 +44,19 @@ int main()
 		{
 			add_history(line);
 			fill_tokens(&tokenes,line);
+			if (tokenes == NULL)
+			{
+				printf("Error: tokenes is not initialized.\n");
+				exit(FAILED_STATUS);
+			}
+		}
+		while(tokenes)
+		{
+			printf("%s==>%d\n",tokenes->value,tokenes->type);
+			tokenes = tokenes->next;
 		}
 	}
-	free(line);
-	ft_safe_malloc(0,FREE_ALL,0,NULL);
-	clear_history();
-	atexit(ft_safe_malloc(0,FREE_ALL,0,NULL));
+
+	atexit(free_all(line));
 	return (0);
 }

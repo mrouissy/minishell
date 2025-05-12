@@ -52,6 +52,7 @@ char **ft_split(char *promt)
 {
 	int i = 0, j = 0, k = 0;
 	char quote;
+	int dollar = 0;
 	int wc = count_tokens(promt);
 	char **tokens = ft_safe_malloc((wc + 1) * sizeof(char *),ALLOCATE,0,NULL);
 	if (!tokens)
@@ -60,17 +61,7 @@ char **ft_split(char *promt)
 	{
 		while (promt[j] && is_space(promt[j]))
 			j++;
-		if (is_sstring(promt + j))
-		{
-			k = 0;
-			tokens[i] = ft_safe_malloc(ft_strlen(promt) + 1,ALLOCATE,0,NULL);
-			if(!tokens)
-				return (NULL);
-			while (promt[j] && is_schar(promt[j]))
-				tokens[i][k++] = promt[j++];
-			tokens[i][k] = '\0';
-		}
-		else if (promt[j] == '\'' || promt[j] == '\"')
+		if (promt[j] == '\'' || promt[j] == '\"')
 		{
 			quote = promt[j];
 			k = 0;
@@ -80,19 +71,36 @@ char **ft_split(char *promt)
 			tokens[i][k++] = quote;
 			j++;
 			while (promt[j] && promt[j] != quote)
-				tokens[i][k++] = promt[j++];
-			//need to handel redriction >> > << <
-			if(promt[j] == quote && (is_space(promt[j + 1]) || is_schar(promt[j + 1])))
-				tokens[i][k++] = quote;
-			if (promt[j] == quote && promt[j++])
 			{
+				if (tokens[i][k] == '$')
+					dollar = 1;
+				tokens[i][k++] = promt[j++];
+			}
+			if ((promt[j] == quote && promt[j + 1]) && !dollar)
+			{
+				j++;
+				if(is_schar(promt[j]) || is_space(promt[j]))
+				{
+					tokens[i][k++] = quote;
+					i++;
+					continue;
+				}
 				while (promt[j] && !is_space(promt[j]))
 					tokens[i][k++] = promt[j++];
 				tokens[i][k++] = quote;
 			}
-			else
+			else if (promt[j] != quote)
+				return (printf("Unclosed quote\n"), NULL);
+			j++;
+		}
+		else if (is_schar(promt[j]))
+		{
+			k = 0;
+			tokens[i] = ft_safe_malloc(ft_strlen(promt) + 1,ALLOCATE,0,NULL);
+			if (!tokens[i])
 				return (NULL);
-			tokens[i][k] = '\0';
+			while (promt[j] && is_schar(promt[j]))
+				tokens[i][k++] = promt[j++];
 		}
 		else
 		{
@@ -101,11 +109,13 @@ char **ft_split(char *promt)
 			if (!tokens[i])
 				return (NULL);
 			while (promt[j] && !is_space(promt[j]) && promt[j] != '\'' && promt[j] != '\"' && !is_schar(promt[j]))
+			{
+				if(is_schar(promt[j]))
+					break;
 				tokens[i][k++] = promt[j++];
-			while (promt[j] && is_schar(promt[j]))
-				tokens[i][k++] = promt[j++];
-			tokens[i][k] = '\0';
+			}
 		}
+		tokens[i][k] = '\0';
 		i++;
 	}
 	tokens[i] = NULL;
@@ -122,32 +132,27 @@ void fill_tokens(s_toknes **tokenes, char *promt)
 	if(!cmd)
 	{
 		printf("Error: ft_split failed");
-		exit(1);
+		exit(FAILED_STATUS);
 	}
 	while (cmd[i])
 	{
 		if(!ft_strcmp(cmd[i],">"))
-			tmp = new(cmd[i],2);
-		else if(!ft_strcmp(cmd[i],">"))
-			tmp = new(cmd[i],3);
+			tmp = new(cmd[i],TOKEN_REDIR_OUT);
+		else if(!ft_strcmp(cmd[i],"<"))
+			tmp = new(cmd[i],TOKEN_REDIR_IN);
 		else if(!ft_strcmp(cmd[i],">>"))
-			tmp = new(cmd[i],4);
+			tmp = new(cmd[i],TOKEN_APPEND);
 		else if(!ft_strcmp(cmd[i],"<<"))
-			tmp = new(cmd[i],5);
+			tmp = new(cmd[i],TOKEN_HEREDOC);
 		else if(!ft_strcmp(cmd[i],"$"))
-			tmp = new(cmd[i],6);
+			tmp = new(cmd[i],TOKEN_DOLLAR);
 		else if(!ft_strcmp(cmd[i],"|"))
-			tmp = new(cmd[i],1);
+			tmp = new(cmd[i],TOKEN_PIPE );
 		else if(!ft_strcmp(cmd[i],"\0"))
-			tmp = new(cmd[i],7);
+			tmp = new(cmd[i],TOKEN_EOF);
 		else
-			tmp = new(cmd[i],0);
+			tmp = new(cmd[i],TOKEN_WORD );
 		add_back(tmp,tokenes);
 		i++;
-	}
-	while(*tokenes)
-	{
-		printf("%s==>%d\n",(*tokenes)->value,(*tokenes)->type);
-		*tokenes=(*tokenes)->next;
 	}
 }
