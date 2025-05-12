@@ -1,13 +1,14 @@
 
  #include "..//headers/head.h"
 
-s_toknes *new(char * value, int type)
+s_toknes *new(char * value, int type, int index)
 {
 	s_toknes *node = malloc(sizeof(s_toknes));
 	if(!node)
 			return NULL;
 	node->value = value;
 	node->type = type;
+	node->index = index;
 	node->next = NULL;
 	return node;
 }

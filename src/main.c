@@ -44,11 +44,6 @@ int main()
 		{
 			add_history(line);
 			fill_tokens(&tokenes,line);
-			if (tokenes == NULL)
-			{
-				printf("Error: tokenes is not initialized.\n");
-				exit(FAILED_STATUS);
-			}
 		}
 		while(tokenes)
 		{

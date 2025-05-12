@@ -29,7 +29,7 @@ bool is_schar(char c);
 bool is_sstring(char *str);
 
 //helper_linked_list
-s_toknes *new(char * value, int type);
+s_toknes *new(char * value, int type, int index);
 void add_back(s_toknes *new, s_toknes **head);
 
 

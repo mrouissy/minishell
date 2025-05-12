@@ -76,10 +76,10 @@ char **ft_split(char *promt)
 					dollar = 1;
 				tokens[i][k++] = promt[j++];
 			}
-			if ((promt[j] == quote && promt[j + 1]) && !dollar)
+			if (promt[j] == quote && !dollar)
 			{
 				j++;
-				if(is_schar(promt[j]) || is_space(promt[j]))
+				if(is_schar(promt[j]) || is_space(promt[j]) || promt[j] == '\0')
 				{
 					tokens[i][k++] = quote;
 					i++;
@@ -131,27 +131,29 @@ void fill_tokens(s_toknes **tokenes, char *promt)
 	cmd = ft_split(promt);
 	if(!cmd)
 	{
-		printf("Error: ft_split failed");
-		exit(FAILED_STATUS);
+		printf("Error: ft_split failed\n");
+		return ;
 	}
 	while (cmd[i])
 	{
 		if(!ft_strcmp(cmd[i],">"))
-			tmp = new(cmd[i],TOKEN_REDIR_OUT);
+			tmp = new(cmd[i],TOKEN_REDIR_OUT,i);
 		else if(!ft_strcmp(cmd[i],"<"))
-			tmp = new(cmd[i],TOKEN_REDIR_IN);
+			tmp = new(cmd[i],TOKEN_REDIR_IN, i);
 		else if(!ft_strcmp(cmd[i],">>"))
-			tmp = new(cmd[i],TOKEN_APPEND);
+			tmp = new(cmd[i],TOKEN_APPEND, i);
 		else if(!ft_strcmp(cmd[i],"<<"))
-			tmp = new(cmd[i],TOKEN_HEREDOC);
+			tmp = new(cmd[i],TOKEN_HEREDOC, i);
 		else if(!ft_strcmp(cmd[i],"$"))
-			tmp = new(cmd[i],TOKEN_DOLLAR);
+			tmp = new(cmd[i],TOKEN_DOLLAR, i);
 		else if(!ft_strcmp(cmd[i],"|"))
-			tmp = new(cmd[i],TOKEN_PIPE );
+			tmp = new(cmd[i],TOKEN_PIPE , i);
 		else if(!ft_strcmp(cmd[i],"\0"))
-			tmp = new(cmd[i],TOKEN_EOF);
+			tmp = new(cmd[i],TOKEN_EOF, i);
+		else if(cmd[i][0] == '-')
+			tmp = new(cmd[i],TOKEN_OPTION, i);
 		else
-			tmp = new(cmd[i],TOKEN_WORD );
+			tmp = new(cmd[i],TOKEN_WORD, i);
 		add_back(tmp,tokenes);
 		i++;
 	}

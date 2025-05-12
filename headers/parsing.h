@@ -3,6 +3,7 @@
 
 
 //tokens-----------------------------------------------
+#define TOKEN_OPTION       -1   // word/option
 #define TOKEN_WORD       0   // Regular word/argument
 #define TOKEN_PIPE       1   // |
 #define TOKEN_REDIR_OUT  2   // >
@@ -16,6 +17,7 @@
 typedef struct t_tokens
 {
 	int type;
+	int index;
 	char *value;
 	struct t_tokens *next;
 } s_toknes;
