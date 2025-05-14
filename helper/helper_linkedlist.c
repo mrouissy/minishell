@@ -28,3 +28,12 @@ void add_back(s_toknes *new, s_toknes **head)
 			tmp = tmp->next;
 	tmp->next = new;
 }
+
+s_toknes *last_token(s_toknes *head)
+{
+	if(!head)
+		return NULL;
+	while(head->next)
+		head=head->next;
+	return head;
+}

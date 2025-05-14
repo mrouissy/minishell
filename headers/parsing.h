@@ -22,10 +22,14 @@ typedef struct t_tokens
 	struct t_tokens *next;
 } s_toknes;
 
+//lexer
 int count_tokens(char *promt);
 void fill_tokens(s_toknes **tokenes, char *promt);
-char **ft_split(char *promt);
+char **ft_tokenes(char *promt);
 void free_split(char **str);
+
+//expande
+bool expand(s_toknes *toknes);
 
 
 #endif

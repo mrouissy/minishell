@@ -45,6 +45,8 @@ int main()
 			add_history(line);
 			fill_tokens(&tokenes,line);
 		}
+		if(!expand(tokenes))
+			printf("error in expand");
 		while(tokenes)
 		{
 			printf("%s==>%d\n",tokenes->value,tokenes->type);

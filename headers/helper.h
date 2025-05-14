@@ -21,16 +21,20 @@
 #include "parsing.h"
 
 //helper_1
+int word_len(char *str);
+char **ft_split(char *str);
 int ft_strlen(char *str);
 int ft_strcmp(char *s1, char *s2);
 bool ft_strchr(char c, char *arry);
 bool is_space(char c);
 bool is_schar(char c);
 bool is_sstring(char *str);
+char *ft_strjoin(char *s1, char *s2);
 
 //helper_linked_list
 s_toknes *new(char * value, int type, int index);
 void add_back(s_toknes *new, s_toknes **head);
+s_toknes *last_token(s_toknes *head);
 
 
 #endif

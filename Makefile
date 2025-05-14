@@ -12,6 +12,7 @@ LDFLAGS = -L/usr/local/opt/readline/lib -I/usr/local/opt/readline/include -lread
 SRC =	src/main.c src/garbege_collecter.c\
 		parsing/signals/siganl.c \
 		parsing/lexer/lexer.c \
+		parsing/expander/expand.c \
 		helper/helper_1.c helper/helper_linkedlist.c
 
 OBJ = $(SRC:.c=.o)

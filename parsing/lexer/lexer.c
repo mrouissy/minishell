@@ -48,7 +48,7 @@ void free_split(char **str)
 	free(str);
 }
 
-char **ft_split(char *promt)
+char **ft_tokenes(char *promt)
 {
 	int i = 0, j = 0, k = 0;
 	char quote;
@@ -72,11 +72,11 @@ char **ft_split(char *promt)
 			j++;
 			while (promt[j] && promt[j] != quote)
 			{
-				if (tokens[i][k] == '$')
+				if(promt[j] == '$')
 					dollar = 1;
 				tokens[i][k++] = promt[j++];
 			}
-			if (promt[j] == quote && !dollar)
+			if (promt[j] == quote)
 			{
 				j++;
 				if(is_schar(promt[j]) || is_space(promt[j]) || promt[j] == '\0')
@@ -85,6 +85,8 @@ char **ft_split(char *promt)
 					i++;
 					continue;
 				}
+				else if (dollar && !is_space(promt[j - 1]))
+					tokens[i][k++] = quote;
 				while (promt[j] && !is_space(promt[j]))
 					tokens[i][k++] = promt[j++];
 				tokens[i][k++] = quote;
@@ -128,7 +130,7 @@ void fill_tokens(s_toknes **tokenes, char *promt)
 	int i = 0;
 	s_toknes *tmp;
 
-	cmd = ft_split(promt);
+	cmd = ft_tokenes(promt);
 	if(!cmd)
 	{
 		printf("Error: ft_split failed\n");
@@ -152,6 +154,8 @@ void fill_tokens(s_toknes **tokenes, char *promt)
 			tmp = new(cmd[i],TOKEN_EOF, i);
 		else if(cmd[i][0] == '-')
 			tmp = new(cmd[i],TOKEN_OPTION, i);
+		else if(ft_strchr('$',cmd[i]))
+			tmp = new(cmd[i],TOKEN_DOLLAR, i);
 		else
 			tmp = new(cmd[i],TOKEN_WORD, i);
 		add_back(tmp,tokenes);
