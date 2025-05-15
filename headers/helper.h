@@ -25,7 +25,7 @@ int word_len(char *str);
 char **ft_split(char *str);
 int ft_strlen(char *str);
 int ft_strcmp(char *s1, char *s2);
-bool ft_strchr(char c, char *arry);
+int ft_strchr(char c, char *arry);
 bool is_space(char c);
 bool is_schar(char c);
 bool is_sstring(char *str);

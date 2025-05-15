@@ -1,66 +1,55 @@
 #include "../../headers/head.h"
-
-char *get_dollar_var(char quote ,char *str)
+//nedd to handel mult $ in one token
+char *get_dollar_var(char *str)
 {
 	int i = 0;
 	char *var;
-	if(quote != '\"' || !str)
-		return NULL;
-	while(*str)
+
+	while (*str)
 	{
-		if(*str == '$')
+		if (*str == '$')
 		{
-			var = ft_safe_malloc(word_len(str),ALLOCATE,0,0);
-			while (!is_space(*str))
+			var = ft_safe_malloc(word_len(str) + 1, ALLOCATE, 0, 0);
+			if (!var)
+				return NULL;
+			str++;
+			while (*str && !is_space(*str))
 			{
 				var[i++] = *str;
 				str++;
 			}
 			var[i] = '\0';
-			return(var);
+			return var;
 		}
 		str++;
 	}
-	return(NULL);
+	return NULL;
 }
-char *replace_var(char **new, char *var)
+
+char *replace_var(char *new, int dollar)
 {
+	char *str;
 	int i = 0;
-	int j = 0;
-	int k = 0;
-	char *str = NULL;
-	char *tmp;
-	char *tmp1;
-	if(new)
-		return NULL;
-	while (new[i])
+	int k = 0 ;
+	char *var;
+	char *tmp = ft_safe_malloc(ft_strlen(new),ALLOCATE,0,0);
+	if(!tmp)
+		return(printf("error in allocate replace_var"),NULL);
+	if (!new)
+		return (printf("string null new"),NULL);
+	while (new[i] && dollar)
 	{
-		if(ft_strchr('$',new[i]))
+		k = 0;
+		while(new[i] && new[i] != '$')
+			tmp[k++] = new[i++];
+		tmp[k] = '\0';
+		str = ft_strjoin(str,tmp);
+		if(new[i] == '$')
 		{
-			tmp = ft_safe_malloc(ft_strlen(new[i]),ALLOCATE,0,0);
-			tmp1 = ft_safe_malloc(ft_strlen(new[i]),ALLOCATE,0,0);
-			if(!tmp || !tmp1)
-				return(printf("error in replace var"),NULL);
-			while (new[i][j] != '$')
-				tmp[k++] = new[i][j++];
-			tmp[k] = '\0';
-			while (!is_space(new[i][j++]))
-				;
-			k = 0;
-			while (new[i][j])
-				tmp1[k++] = new[i][j++];
-			tmp1[k] = '\0';
-			str = ft_strjoin(str,tmp);
+			var = get_dollar_var(new + i);
 			str = ft_strjoin(str,getenv(var));
-			str = ft_strjoin(str,tmp1);
-			str = ft_strjoin(str," ");
+			dollar--;
 		}
-		else
-		{
-			str = ft_strjoin(str,new[i]);
-			str = ft_strjoin(str," ");
-		}
-		i++;
 	}
 	return str;
 }
@@ -68,34 +57,29 @@ char *replace_var(char **new, char *var)
 bool expand(s_toknes *toknes)
 {
 	char **cmd;
-	char *str;
-	char quote;
-	char *variable;
+	int dollar = 0;
+	char *str ;
 	int i = 0 ;
 	while (toknes)
 	{
-		if(toknes->type == TOKEN_DOLLAR)
+		if(toknes->type == TOKEN_DOLLAR && toknes->value[0] == '\"')
 		{
-			str = toknes->value;
-			quote = str[0];
-			cmd = ft_split(str);
+			cmd = ft_split(toknes->value);
 			if(!cmd)
 				return(printf("error in split"));
 			while (cmd[i])
 			{
-				if(ft_strchr('$',cmd[i]))
-				{
-					variable = get_dollar_var(quote,cmd[i]);
-					if(!variable)
-						return false;
-					break;
-				}
+				//
+				// if((dollar = ft_strchr('$',cmd[i])))
+				// 	cmd[i] = replace_var(cmd[i], dollar);
+				str = ft_strjoin(str,cmd[i]);
 				i++;
 			}
-			toknes->value = replace_var(cmd,variable);
+			toknes->value = str;
+			printf("%s\n",toknes->value);
 		}
 		toknes = toknes->next;
 	}
 	return true;
 }
-//srtjoin
+

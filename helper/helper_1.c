@@ -33,17 +33,18 @@ int ft_strcmp(char *s1, char *s2)
 	return (*s1 - *s2);
 }
 
-bool ft_strchr(char c, char *arry)
+int ft_strchr(char c, char *arry)
 {
+	int i = 0;
 	if(!arry && !c)
-		return (false);
+		return (0);
 	while(*arry)
 	{
 		if(c == *arry)
-			return (true);
+			i++;
 		arry++;
 	}
-	return (false);
+	return (i);
 }
 bool is_space(char c)
 {
@@ -129,21 +130,18 @@ char **ft_split(char *str)
 	int i = 0;
 	int j = 0;
 	char **result = ft_safe_malloc(count + 1,ALLOCATE,0,0);
-	if(!result)
+	if(!result || !str)
 		return(NULL);
-	while (i <= count && *str)
+	while (*str)
 	{
 		if(!is_space(*str))
 		{
 			j = 0;
-			result[i] =ft_safe_malloc(word_len(str)+1,ALLOCATE,0,0);
+			result[i] =ft_safe_malloc(word_len(str) + 1 ,ALLOCATE,0,0);
 			if(!result[i])
 				return(free_split(result),NULL);
-			while (!is_space(*str))
-			{
+			while (!is_space(*str) && *str)
 				result[i][j++] = *str++;
-				//str++;
-			}
 			result[i][j] = '\0';
 			i++;
 		}

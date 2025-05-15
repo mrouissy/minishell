@@ -39,7 +39,7 @@ int main()
 	display();
 	while (1)
 	{
-		line =readline("./minishell$ ");
+		line =readline("./minishell >> ");
 		if(ft_strlen(line))
 		{
 			add_history(line);
@@ -47,11 +47,7 @@ int main()
 		}
 		if(!expand(tokenes))
 			printf("error in expand");
-		while(tokenes)
-		{
-			printf("%s==>%d\n",tokenes->value,tokenes->type);
-			tokenes = tokenes->next;
-		}
+		
 	}
 
 	atexit(free_all(line));
