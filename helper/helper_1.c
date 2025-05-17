@@ -6,7 +6,7 @@
 /*   By: mrouissy <mrouissy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 13:08:32 by mrouissy          #+#    #+#             */
-/*   Updated: 2025/04/29 14:10:16 by mrouissy         ###   ########.fr       */
+/*   Updated: 2025/05/16 14:43:04 by mrouissy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@ int ft_strlen(char *str)
 	int i;
 	if(!str)
 		return 0;
-	i = -1;
-	while (str[++i])
+	i = 0;
+	while (str[i++])
 		;
 	return (i);
 }
@@ -75,6 +75,7 @@ int word_len(char *str)
 }
 char *ft_strdup(char *str)
 {
+	int i = 0;
 	if(!str)
 		return NULL;
 	char *dup = ft_safe_malloc(ft_strlen(str) + 1 ,ALLOCATE,0,0);
@@ -82,29 +83,33 @@ char *ft_strdup(char *str)
 		return NULL;
 	while(*str)
 	{
-		*dup = *str;
-		dup++;
+		dup[i++] = *str;
 		str++;
 	}
+	dup[i] = '\0';
 	return dup;
 }
 char *ft_strjoin(char *s1, char *s2)
 {
+	int i = 0;
+	if (!s1 && !s2)
+		return(printf("error strjoin"),NULL);
 	if(!s1)
 		return ft_strdup(s2);
-	else if (!s2)
+	if (!s2)
 		return ft_strdup(s1);
 	char *ret = ft_safe_malloc(ft_strlen(s1) + ft_strlen(s2) + 1,ALLOCATE,0,0);
 	while (*s1)
 	{
-		*ret = *s1;
+		ret[i++] = *s1;
 		s1++;
 	}
 	while (*s2)
 	{
-		*ret = *s2;
+		ret[i++] = *s2;
 		s2++;
 	}
+	ret[i] = '\0';
 	return ret;
 }
 int wc(char *str)

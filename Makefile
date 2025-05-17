@@ -1,7 +1,7 @@
 
 NAME = ./minishell
 CC = cc
-CFLAGS = #-Wall -Wextra -Werror -g3 #-fsanitize=address -g
+CFLAGS = -Wall -Wextra -Werror -g3 #-fsanitize=address -g
 
 #hadi hi fmac
 LDFLAGS = -L/usr/local/opt/readline/lib -I/usr/local/opt/readline/include -lreadline -lhistory
