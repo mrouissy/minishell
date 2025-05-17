@@ -1,3 +1,4 @@
 need to check this case "$HOME"l ==>  /Users/mohamedaminerouissyl not /Users/mohamedaminerouissy l or $homel
 also need to handel |medd| ==> | medd | not | or | medd
 also nedd to handel hi$HOME
+also need to handel \" \'

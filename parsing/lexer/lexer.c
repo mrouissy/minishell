@@ -61,7 +61,7 @@ char **ft_tokenes(char *promt)
 	{
 		while (promt[j] && is_space(promt[j]))
 			j++;
-		if (promt[j] == '\'' || promt[j] == '\"')
+		if ((promt[j] == '\'' || promt[j] == '\"') && promt[j - 1] != '\\')
 		{
 			quote = promt[j];
 			k = 0;
@@ -91,7 +91,7 @@ char **ft_tokenes(char *promt)
 					tokens[i][k++] = promt[j++];
 				tokens[i][k++] = quote;
 			}
-			else if (promt[j] != quote)
+			else if (ft_strchr(quote,promt) % 2 != 0)
 				return (printf("Unclosed quote\n"), NULL);
 			j++;
 		}
@@ -139,25 +139,25 @@ void fill_tokens(s_toknes **tokenes, char *promt)
 	while (cmd[i])
 	{
 		if(!ft_strcmp(cmd[i],">"))
-			tmp = new(cmd[i],TOKEN_REDIR_OUT,i);
+			tmp = new(cmd[i],TOKEN_REDIR_OUT);
 		else if(!ft_strcmp(cmd[i],"<"))
-			tmp = new(cmd[i],TOKEN_REDIR_IN, i);
+			tmp = new(cmd[i],TOKEN_REDIR_IN);
 		else if(!ft_strcmp(cmd[i],">>"))
-			tmp = new(cmd[i],TOKEN_APPEND, i);
+			tmp = new(cmd[i],TOKEN_APPEND);
 		else if(!ft_strcmp(cmd[i],"<<"))
-			tmp = new(cmd[i],TOKEN_HEREDOC, i);
+			tmp = new(cmd[i],TOKEN_HEREDOC);
 		else if(!ft_strcmp(cmd[i],"$"))
-			tmp = new(cmd[i],TOKEN_DOLLAR, i);
+			tmp = new(cmd[i],TOKEN_DOLLAR);
 		else if(!ft_strcmp(cmd[i],"|"))
-			tmp = new(cmd[i],TOKEN_PIPE , i);
+			tmp = new(cmd[i],TOKEN_PIPE );
 		else if(!ft_strcmp(cmd[i],"\0"))
-			tmp = new(cmd[i],TOKEN_EOF, i);
+			tmp = new(cmd[i],TOKEN_EOF);
 		else if(cmd[i][0] == '-')
-			tmp = new(cmd[i],TOKEN_OPTION, i);
+			tmp = new(cmd[i],TOKEN_OPTION);
 		else if(ft_strchr('$',cmd[i]))
-			tmp = new(cmd[i],TOKEN_DOLLAR, i);
+			tmp = new(cmd[i],TOKEN_DOLLAR);
 		else
-			tmp = new(cmd[i],TOKEN_WORD, i);
+			tmp = new(cmd[i],TOKEN_WORD);
 		add_back(tmp,tokenes);
 		i++;
 	}

@@ -19,7 +19,6 @@ char *get_dollar_var(char *str, char quote)
 				str++;
 			}
 			var[i] = '\0';
-			//printf("%s\n",var);
 			return var;
 		}
 		str++;
@@ -27,7 +26,7 @@ char *get_dollar_var(char *str, char quote)
 	return NULL;
 }
 
-char *replace_var(char *new, int dollar)
+char *replace_var(char *new)
 {
 	char *str = NULL;
 	int i = 0;
@@ -38,7 +37,7 @@ char *replace_var(char *new, int dollar)
 		return(printf("error in allocate replace_var"),NULL);
 	if (!new)
 		return (printf("string null new"),NULL);
-	while (dollar && new[i])
+	while (new[i])
 	{
 		k = 0;
 		while(new[i] && new[i] != '$')
@@ -46,21 +45,33 @@ char *replace_var(char *new, int dollar)
 		tmp[k] = '\0';
 		if (!(str = ft_strjoin(str,tmp)))
 			return NULL;
-		if(new[i] == '$')
+		if(new[i] == '$' && new[i-1] != '\\')
 		{
-			var = get_dollar_var(new + i,new[0]);
-			if (!(str = ft_strjoin(str,getenv(var))))
+			var = getenv(get_dollar_var(new + i,new[0]));
+			if(!var)
+			{
+				while (!is_space(new[i]) && new[i])
+					tmp[k++] = new[i++];
+				tmp[k] = '\0';
+				if (!(var= ft_strjoin(str,tmp)))
+					return NULL;
+			}
+			else
+			{
+				while (!is_space(new[i]) && new[i] != new[0] && new[i])
+					i++;
+			}
+			if (!(str = ft_strjoin(str,var)))
 				return NULL;
-			dollar--;
-			while (!is_space(new[i]) && new[i] != new[0])
-			i++;
 		}
-		//need handel last ' "
-		// while(new[i] && new[i] != '$')
-		// 	tmp[k++] = new[i++];
-		// tmp[k] = '\0';
-		// if (!(str = ft_strjoin(str,tmp)))
-		// 	return NULL;
+		else if(new[i - 1] == '\\' && new[i] == '$')
+		{
+			while (!is_space(new[i]) && new[i])
+				tmp[k++] = new[i++];
+			tmp[k] = '\0';
+			if (!(str = ft_strjoin(str,tmp)))
+				return NULL;
+		}
 	}
 	return str;
 }
@@ -69,12 +80,11 @@ bool expand(s_toknes *toknes)
 {
 	while (toknes)
 	{
-		if(toknes->type == TOKEN_DOLLAR && toknes->value[0] == '\"')
+		if(toknes->type == TOKEN_DOLLAR )
 		{
-			toknes->value = replace_var(toknes->value,ft_strchr('$',toknes->value));
+			toknes->value = replace_var(toknes->value);
 		}
 		toknes = toknes->next;
 	}
 	return true;
 }
-

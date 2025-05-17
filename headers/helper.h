@@ -6,7 +6,7 @@
 /*   By: mrouissy <mrouissy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 13:13:31 by mrouissy          #+#    #+#             */
-/*   Updated: 2025/04/29 14:00:10 by mrouissy         ###   ########.fr       */
+/*   Updated: 2025/05/17 15:18:05 by mrouissy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ bool is_sstring(char *str);
 char *ft_strjoin(char *s1, char *s2);
 
 //helper_linked_list
-s_toknes *new(char * value, int type, int index);
+s_toknes *new(char * value, int type);
 void add_back(s_toknes *new, s_toknes **head);
 s_toknes *last_token(s_toknes *head);
 

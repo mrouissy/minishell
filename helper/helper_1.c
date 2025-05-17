@@ -6,7 +6,7 @@
 /*   By: mrouissy <mrouissy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 13:08:32 by mrouissy          #+#    #+#             */
-/*   Updated: 2025/05/16 14:43:04 by mrouissy         ###   ########.fr       */
+/*   Updated: 2025/05/17 17:33:08 by mrouissy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int ft_strchr(char c, char *arry)
 		return (0);
 	while(*arry)
 	{
-		if(c == *arry)
+		if(c == *arry || *(arry - 1) != '\\')
 			i++;
 		arry++;
 	}
