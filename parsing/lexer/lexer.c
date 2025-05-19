@@ -1,5 +1,4 @@
 
-
 #include "../../headers/head.h"
 
 int count_tokens(char *promt)
@@ -110,9 +109,9 @@ char **ft_tokenes(char *promt)
 			tokens[i] = ft_safe_malloc(ft_strlen(promt) + 1,ALLOCATE,0,NULL);
 			if (!tokens[i])
 				return (NULL);
-			while (promt[j] && !is_space(promt[j]) && promt[j] != '\'' && promt[j] != '\"' && !is_schar(promt[j]))
+			while (promt[j] && promt[j] != '\'' && promt[j] != '\"')
 			{
-				if(is_schar(promt[j]))
+				if(is_schar(promt[j]) || is_space(promt[j]))
 					break;
 				tokens[i][k++] = promt[j++];
 			}
