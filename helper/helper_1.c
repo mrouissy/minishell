@@ -40,7 +40,7 @@ int ft_strchr(char c, char *arry)
 		return (0);
 	while(*arry)
 	{
-		if(c == *arry || *(arry - 1) != '\\')
+		if(c == *arry)
 			i++;
 		arry++;
 	}
@@ -157,3 +157,18 @@ char **ft_split(char *str)
 	return result;
 }
 
+char *remove_quote(char *token, char quote)
+{
+	int i = 0;
+	char *str = ft_safe_malloc(ft_strlen(token), ALLOCATE, 0, 0);
+	if (!str)
+		return(write(2,"error in acclocation remove quote",2), NULL);
+	while (*token)
+	{
+		if(*token == quote)
+			token++;
+		str[i++] = *token;
+		token++;
+	}
+	return str;
+}

@@ -1,9 +1,8 @@
 #ifndef PARCING_H
 #define PARCING_H
 
-
 //tokens-----------------------------------------------
-#define TOKEN_OPTION       -1   // word/option
+#define TOKEN_OPTION    -1   // word/option
 #define TOKEN_WORD       0   // Regular word/argument
 #define TOKEN_WORD       0   // Regular word/argument
 #define TOKEN_WORD       0   // Regular word/argument
@@ -30,7 +29,7 @@ char **ft_tokenes(char *promt);
 void free_split(char **str);
 
 //expande
-bool expand(s_toknes *toknes);
+void expand(s_toknes *toknes);
 
 
 #endif

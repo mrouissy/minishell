@@ -1,11 +1,11 @@
 #include "../../headers/head.h"
-//nedd to handel mult $ in one token
+
 char *get_dollar_var(char *str, char quote)
 {
 	int i = 0;
 	char *var;
 
-	while (*str)
+	while (*str && quote != '\'')
 	{
 		if (*str == '$')
 		{
@@ -43,40 +43,31 @@ char *replace_var(char *new)
 		while(new[i] && new[i] != '$')
 			tmp[k++] = new[i++];
 		tmp[k] = '\0';
-		if (!(str = ft_strjoin(str,tmp)))
-			return NULL;
-		if(new[i] == '$' && new[i-1] != '\\')
+		str = ft_strjoin(str,tmp);
+		if(new[i] && new[i] == '$')
 		{
-			var = getenv(get_dollar_var(new + i,new[0]));
-			if(!var)
+			if ((var = getenv(get_dollar_var(&new[i] , new[0]))))
 			{
-				while (!is_space(new[i]) && new[i])
-					tmp[k++] = new[i++];
-				tmp[k] = '\0';
-				if (!(var= ft_strjoin(str,tmp)))
-					return NULL;
+				str = ft_strjoin(str, var);
+				while(new[i] && !is_space(new[i]) && new[i] != new[0])
+					i++;
+				//printf("%s    %d     %s\n",&new[i], i,var);
 			}
 			else
 			{
-				while (!is_space(new[i]) && new[i] != new[0] && new[i])
-					i++;
+				k = 0;
+				while (new[i] && !is_space(new[i]))
+					tmp[k++] = new[i++];
+				tmp[k] = '\0';
+				str = ft_strjoin(str, tmp);
 			}
-			if (!(str = ft_strjoin(str,var)))
-				return NULL;
-		}
-		else if(new[i - 1] == '\\' && new[i] == '$')
-		{
-			while (!is_space(new[i]) && new[i])
-				tmp[k++] = new[i++];
-			tmp[k] = '\0';
-			if (!(str = ft_strjoin(str,tmp)))
-				return NULL;
 		}
 	}
+	str = remove_quote(str, *str);
 	return str;
 }
 
-bool expand(s_toknes *toknes)
+void expand(s_toknes *toknes)
 {
 	while (toknes)
 	{
@@ -86,7 +77,4 @@ bool expand(s_toknes *toknes)
 		}
 		toknes = toknes->next;
 	}
-	return true;
 }
-
-
