@@ -30,6 +30,7 @@ bool is_space(char c);
 bool is_schar(char c);
 bool is_sstring(char *str);
 char *ft_strjoin(char *s1, char *s2);
+char *remove_quote(char *token, char quote);
 
 //helper_linked_list
 s_toknes *new(char * value, int type);
